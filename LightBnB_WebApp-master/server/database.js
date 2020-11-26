@@ -3,12 +3,19 @@ const users = require("./json/users.json");
 const { Pool } = require("pg");
 
 /// Users
+const pool = new Pool({
+  user: "vagrant",
+  password: "123",
+  host: "localhost",
+  database: "lightbnb",
+});
 
 /**
  * Get a single user from the database given their email.
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+
 const getUserWithEmail = function (email) {
   let user;
   for (const userId in users) {
@@ -68,7 +75,7 @@ exports.getAllReservations = getAllReservations;
  */
 
 const getAllProperties = function (options, limit = 10) {
-  pool
+  return pool
     .query(
       `
   SELECT * FROM properties
@@ -77,7 +84,11 @@ const getAllProperties = function (options, limit = 10) {
       [limit]
     )
     .then((res) => {
-      res.rows;
+      res.rows.forEach((prop) => {
+        console.log(
+          `${prop.title} is $ ${prop.cost_per_night} per night and has ${prop.number_of_bedrooms} bedrooms`
+        );
+      });
     });
 };
 exports.getAllProperties = getAllProperties;
