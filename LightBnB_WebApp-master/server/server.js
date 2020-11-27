@@ -37,4 +37,6 @@ app.get("/test", (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, (err) => console.log(err || `listening on port ${port} 😎`));
+app.listen(port, (err) =>
+  console.log(err || `listening on port ${port} 😎 http://localhost:3000/`)
+);
