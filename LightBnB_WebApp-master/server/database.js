@@ -97,7 +97,7 @@ const getAllReservations = function (guest_id, limit = 10) {
   SELECT reservations.* FROM reservations
   JOIN properties ON properties.id =  reservations.property_id
   JOIN users ON users.id = reservations.guest_id
-  WHERE guest_id = $1
+  WHERE $1 = $1
   AND start_date < now()::date
   GROUP BY reservations.id
   ORDER BY reservations.start_date DESC
@@ -151,7 +151,7 @@ const getAllProperties = function (options, limit = 10) {
     queryParams.push(`${options.minimum_rating}`);
     queryString += `AND rating >= $${queryParams.length} `;
   }
-
+  console.log(limit);
   queryParams.push(limit);
 
   queryString += `
@@ -160,8 +160,7 @@ const getAllProperties = function (options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  // console.log(queryString, queryParams);
-  // console.log(limit);
+  console.log(queryString, queryParams);
 
   return pool
     .query(queryString, queryParams)
